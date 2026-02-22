@@ -13,6 +13,7 @@ For this ``empty`` code the threads will stop on `loop_counter2` = 5 and `loop_c
 ---
 
 **Issues:
+
 ** 1. Lambda at line 17 captures everything by reference `[&]`
 should be: `[&running, Process, timeout]` (simple way exactly for this code) or `[running, Process, timeout]` (with <memory> and `shared_ptr` for `running`, which is hinted in code).
 
