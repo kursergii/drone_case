@@ -1,8 +1,11 @@
 def rotate_in_place(matrix):
     n = len(matrix)
     for r in range(n):
-        for c in range(n):
-            matrix[r][c] = matrix[n-c-1][r]
+        for c in range(r+1, n):
+            matrix[c][r], matrix[r][c] = matrix[r][c],  matrix[c][r]
+
+    for r in range(n):
+        matrix[r].reverse()
 
 
 MATRIX1 = [
