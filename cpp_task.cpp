@@ -9,15 +9,15 @@ using namespace std::chrono_literals;
 
 void StartThread(
     std::thread& thread,
-    std::atomic<bool>& running,
+    std::shared_ptr<std::atomic<bool>> running,
     const std::function<bool(void)>& Process,
     const std::chrono::seconds timeout)
 {
     thread = std::thread(
-        [&] ()
+        [running, Process, timeout] ()
         {
             auto start = std::chrono::high_resolution_clock::now();
-            while(running)
+            while(*running)
             {
                 bool aborted = Process();
 
@@ -25,7 +25,7 @@ void StartThread(
                 auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
                 if (aborted || duration > timeout)
                 {
-                    running = false;
+                    *running = false;
                     break;
                 }
             }
@@ -34,7 +34,7 @@ void StartThread(
 
 int main(int argc, char **argv)
 {
-    std::atomic<bool> my_running = true;
+    auto my_running = std::make_shared<std::atomic<bool>>(true);
     std::thread my_thread1, my_thread2;
     int loop_counter1 = 0, loop_counter2 = 0;
 
