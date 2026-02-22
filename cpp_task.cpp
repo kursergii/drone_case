@@ -38,7 +38,7 @@ int main(int argc, char **argv)
     std::thread my_thread1, my_thread2;
     int loop_counter1 = 0, loop_counter2 = 0;
 
-    // start actions in seprate threads and wait of them
+    // start actions in separate threads and wait for them
 
     StartThread(
         my_thread1,
